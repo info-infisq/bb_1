@@ -174,9 +174,9 @@
         </div>
         <div class="divider"></div>
         <p class="contact-label">Have a question? Reach us at</p>
-        <a class="mail-link" href="/cdn-cgi/l/email-protection#d4a6b1b5b7bca1a794b6bda0b6ada0b1a0b1b7bcfabba6b3">
+        <a class="mail-link" href="mailto:reachus@bitbytetech.org">
           <span class="plane"><svg class="envelope" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></span>
-          <span class="__cf_email__" data-cfemail="c0b2a5a1a3a8b5b380a2a9b4a2b9b4a5b4a5a3a8eeafb2a7">[email&#160;protected]</span>
+          reachus@bitbytetech.org
           <span class="plane-ghost">&#9992;</span>
         </a>
       </div>
@@ -207,9 +207,9 @@
         </div>
         <div class="divider"></div>
         <p class="contact-label">Interested in joining us? Reach us at</p>
-        <a class="mail-link" href="/cdn-cgi/l/email-protection#10627571737865635072796472696475647573783e7f6277">
+        <a class="mail-link" href="mailto:reachus@bitbytetech.org">
           <span class="plane"><svg class="envelope" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></span>
-          <span class="__cf_email__" data-cfemail="63110602000b161023010a17011a17061706000b4d0c1104">[email&#160;protected]</span>
+          reachus@bitbytetech.org
           <span class="plane-ghost">&#9992;</span>
         </a>
       </div>
@@ -228,9 +228,9 @@
         </div>
         <button class="flash-dismiss" onclick="dismissFlash(event)">Got it &rarr;</button>
         <div class="flash-divider"></div>
-        <a class="flash-mail" href="/cdn-cgi/l/email-protection#8efcebefede6fbfdceece7faecf7faebfaebede6a0e1fce9">
+        <a class="flash-mail" href="mailto:reachus@bitbytetech.org">
           <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
-          <span class="__cf_email__" data-cfemail="f082959193988583b09299849289849584959398de9f8297">[email&#160;protected]</span>
+          reachus@bitbytetech.org
         </a>
       </div>
     </div>
@@ -238,7 +238,7 @@
     <p class="footer">&copy; 2026 BitByte Technologies. All rights reserved.</p>
   </div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     function toggleTheme(){
       var html=document.documentElement,dark=html.getAttribute('data-theme')==='dark';
       html.setAttribute('data-theme',dark?'light':'dark');
@@ -252,7 +252,7 @@
       document.getElementById('panel-'+tab).classList.add('active');
       startTypewriter(tab);
     }
-    var fullText='Something brilliant\nis brewing.';
+    var fullText='Something brilliant\nis Brewing.';
     var typeTimers={};
     function startTypewriter(panel){
       var el=document.getElementById('typed-'+panel);
@@ -271,7 +271,7 @@
       type();
     }
     startTypewriter('home');
-    var timedText='Big things take time.\nWorth the wait.';
+    var timedText='Big things take time...\n Making the wait worth IT...';
     function startTimedTypewriter(){
       var el=document.getElementById('typed-timed');
       var msg=document.getElementById('timed-msg-el');
@@ -334,7 +334,10 @@
     }
     updateCountdown();
     setInterval(updateCountdown,1000);
-    // Flash card now triggers 25s after email submission
+    setTimeout(function(){
+      document.getElementById('timedReveal').classList.add('visible');
+      startTimedTypewriter();
+    },25000);
     function dismissFlash(e){
       var card=document.getElementById('flashCard');
       if(!card.contains(e.target)||e.target.classList.contains('flash-close')||e.target.classList.contains('flash-dismiss')){
@@ -342,64 +345,11 @@
         ov.style.opacity='0';ov.style.pointerEvents='none';
       }
     }
-    var SHEET_URL='https://script.google.com/macros/s/AKfycbyPPase8e9DLUEN7hyr4UgYJPk8pPm1wKG1xOb4HskuCAI9kVnO8C6ejKYRFRTv1gze/exec';
-    var flashTriggered=false;
-
     function submitNotify(panel){
       var input=document.getElementById('notify-email-'+panel);
-      var btn=document.querySelector('#panel-'+panel+' .notify-btn');
       var success=document.getElementById('notify-success-'+panel);
-
-      // Validate email
-      var email=input.value.trim();
-      if(!email||!email.includes('@')||!email.includes('.')){
-        input.style.borderColor='#e05555';
-        input.style.boxShadow='0 0 0 2px #e0555533';
-        setTimeout(function(){input.style.borderColor='';input.style.boxShadow='';},1400);
-        return;
-      }
-
-      // Disable UI while submitting
-      input.disabled=true;
-      btn.disabled=true;
-      btn.textContent='Sending...';
-
-      // POST to Google Sheets
-      fetch(SHEET_URL,{
-        method:'POST',
-        mode:'no-cors',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email:email,source:panel.charAt(0).toUpperCase()+panel.slice(1)})
-      })
-      .then(function(){
-        // Success
-        btn.textContent='Sent ✓';
-        btn.style.background='linear-gradient(135deg,#2a9a5a,#3dbb6f)';
-        success.classList.add('show');
-        input.value='';
-
-        // Trigger flash card after 25 seconds (only once)
-        if(!flashTriggered){
-          flashTriggered=true;
-          setTimeout(function(){
-            document.getElementById('timedReveal').classList.add('visible');
-            startTimedTypewriter();
-          },25000);
-        }
-      })
-      .catch(function(){
-        // Still show success (no-cors fetch always resolves, this is fallback)
-        btn.textContent='Sent ✓';
-        success.classList.add('show');
-        input.value='';
-        if(!flashTriggered){
-          flashTriggered=true;
-          setTimeout(function(){
-            document.getElementById('timedReveal').classList.add('visible');
-            startTimedTypewriter();
-          },25000);
-        }
-      });
+      if(!input.value||!input.value.includes('@')){input.style.borderColor='#e05555';setTimeout(function(){input.style.borderColor='';},1200);return;}
+      input.disabled=true;success.classList.add('show');input.value='';
     }
 
     /* ── PARTICLE NETWORK ── */
@@ -460,4 +410,23 @@
         for(var i=0;i<particles.length;i++){
           for(var j=i+1;j<particles.length;j++){
             var dx=particles[i].x-particles[j].x;
-          
+            var dy=particles[i].y-particles[j].y;
+            var d=Math.sqrt(dx*dx+dy*dy);
+            if(d<LINK){
+              var alpha=(1-d/LINK)*0.45;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x,particles[i].y);
+              ctx.lineTo(particles[j].x,particles[j].y);
+              ctx.strokeStyle=lineColor+alpha+')';
+              ctx.lineWidth=0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(loop);
+      }
+      loop();
+    })();
+  </script>
+</body>
+</html>
